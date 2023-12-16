@@ -5,6 +5,7 @@ import {
 import { connectDB } from "@/config/dbConfig";
 import { UserButton } from "@clerk/nextjs";
 import { auth, currentUser } from "@clerk/nextjs/server";
+
 connectDB();
 
 export default async function Home() {
@@ -12,8 +13,9 @@ export default async function Home() {
   await getMongoDBUserIDOfLoggedInUser();
 
   return (
-    <div className="p-10">
-      <UserButton afterSignOutUrl="/" />
+    <div className="">
+      
+      <h1>Home Page</h1>
     </div>
   );
 }
