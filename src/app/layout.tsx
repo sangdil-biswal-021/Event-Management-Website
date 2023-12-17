@@ -4,6 +4,7 @@ import "./globals.css";
 import Uii from "@/providers/Uii";
 import { ClerkProvider } from "@clerk/nextjs";
 import LayoutProvider from "@/providers/LayoutProvider";
+import 'remixicon/fonts/remixicon.css'
 
 // const inter = Inter({ subsets: ['latin'] })
 

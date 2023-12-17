@@ -52,12 +52,12 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-gray-200 h-screen lg:px-20 px-5">
       {isPrivateRoute && (
-        <div className="bg-white flex justify-between items-center shadow p-3">
-          <h1 className="text-gray-600 font-semibold text-2xl">FF EVENTS</h1>
+        <div className="bg-white flex justify-between items-center shadow px-3 py-5">
+          <h1 className="font-semibold text-2xl cursor-pointer text-blue-900" onClick={() => router.push("/")}>FF EVENTS</h1>
           <div className="flex gap-5 items-center">
             <Dropdown size="sm">
               <DropdownTrigger>
-                <Button variant="bordered">Profile</Button>
+                <Button variant="flat" color="primary" size="sm">Profile</Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
                 {menusToShow.map((menu) => (
@@ -76,7 +76,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       )}
-      <div className="p-3">{children}</div>
+      <div className="py-3">{children}</div>
     </div>
   );
 }
