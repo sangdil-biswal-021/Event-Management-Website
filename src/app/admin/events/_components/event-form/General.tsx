@@ -6,12 +6,12 @@ export interface EventFormStepProps {
     setEvent: React.Dispatch<React.SetStateAction<any>>;
     activeStep: number;
     setActiveStep: React.Dispatch<React.SetStateAction<number>>;
-    // newlySelectedImages: any[];
-    // setNewlySelectedImages: React.Dispatch<React.SetStateAction<any[]>>;
+    newlySelectedImages: any[];
+    setNewlySelectedImages: React.Dispatch<React.SetStateAction<any[]>>;
   
     // alreadyUploadedImages: string[];
     // setAlreadyUploadedImages: React.Dispatch<React.SetStateAction<string[]>>;
-    // loading : boolean;
+    loading : boolean;
   }
 
 function General({event,activeStep,setActiveStep,setEvent,}:EventFormStepProps) {
