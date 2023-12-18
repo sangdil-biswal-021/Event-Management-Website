@@ -4,6 +4,7 @@ import "./globals.css";
 import Uii from "@/providers/Uii";
 import { ClerkProvider } from "@clerk/nextjs";
 import LayoutProvider from "@/providers/LayoutProvider";
+import 'remixicon/fonts/remixicon.css'
 
 // const inter = Inter({ subsets: ['latin'] })
 
@@ -21,7 +22,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>
+        <body className="bg-gray-200 h-screen">
           <Uii>
             <LayoutProvider>{children}</LayoutProvider>
           </Uii>
