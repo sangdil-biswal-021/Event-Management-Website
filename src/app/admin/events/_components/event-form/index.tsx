@@ -16,10 +16,14 @@ interface Props {
   type?: "edit" | "create";
 }
 
-
 function EventForm({ initialData, type = "create" }: Props) {
+  const [alreadyUploadedImages = [], setAlreadyUploadedImages] = React.useState<
+    string[]
+  >([]);
   const [activeStep = 0, setActiveStep] = React.useState<number>(0);
-  const [newlySelectedImages = [], setNewlySelectedImages] = React.useState<any[]>([]);
+  const [newlySelectedImages = [], setNewlySelectedImages] = React.useState<
+    any[]
+  >([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const router = useRouter();
   const [event, setEvent] = React.useState<any>(null);
@@ -27,11 +31,22 @@ function EventForm({ initialData, type = "create" }: Props) {
     try {
       setLoading(true);
       e.preventDefault();
-      event.images = await uploadImagesToFirebaseAndGetUrls(
-        newlySelectedImages.map((image: any) => image.file)
-      ); //this will store the image in firebase
-      await axios.post("/api/admin/events", event);//will create the data in mongo db
-      toast.success("Event created successfully");
+
+      if (type === "create") {
+        event.images = await uploadImagesToFirebaseAndGetUrls(
+          newlySelectedImages.map((image: any) => image.file)
+        ); //this will store the image in firebase
+        await axios.post("/api/admin/events", event); //will create the data in mongo db
+        toast.success("Event created successfully");
+      } else {
+        const newlyUploadedImageUrls = await uploadImagesToFirebaseAndGetUrls(
+          newlySelectedImages.map((image: any) => image.file)
+        );
+        event.images = [...alreadyUploadedImages, ...newlyUploadedImageUrls];
+        await axios.put(`/api/admin/events/${event._id}`, event);
+        toast.success("Event updated successfully");
+      }
+
       router.refresh();
       router.push("/admin/events");
     } catch (error: any) {
@@ -48,16 +63,19 @@ function EventForm({ initialData, type = "create" }: Props) {
     setActiveStep,
     newlySelectedImages,
     setNewlySelectedImages,
+
+    alreadyUploadedImages,
+    setAlreadyUploadedImages,
+
     loading,
   };
 
   useEffect(() => {
     if (initialData) {
       setEvent(initialData);
-      // setAlreadyUploadedImages(initialData.images);
+      setAlreadyUploadedImages(initialData.images);
     }
   }, [initialData]);
-
 
   return (
     <div>
