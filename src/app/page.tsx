@@ -12,7 +12,7 @@ connectDB();
 export default async function Home() {
   await handleNewUserRegistration();
 
-  const events: EventType = (await EventModel.find({}).sort({
+  const events: EventType [] = (await EventModel.find({}).sort({
     createdAt: -1,
   })) as any;
 
