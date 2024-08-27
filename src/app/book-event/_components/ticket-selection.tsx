@@ -8,8 +8,8 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import PaymentModal from "./payment-model";
 const stripePromise = loadStripe(
-//   "pk_test_51IYnC0SIR2AbPxU0TMStZwFUoaDZle9yXVygpVIzg36LdpO8aSG8B9j2C0AikiQw2YyCI8n4faFYQI5uG3Nk5EGQ00lCfjXYvZ"
-  "pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
+  // process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  "pk_test_51PLsXp1WlAqEciIKoyWxAfERX1U1rREbxQ3Mgxg0my6kDsVoem2EI00vR4WUzjpDpboOQKp2YM5YVxt128AxTjEn00wjHe1Gt0"
 );
 interface TicketSelectionProps {
   event: EventType;
