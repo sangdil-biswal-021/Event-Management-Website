@@ -23,7 +23,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
   ];
   const menusForUser = [
     { title: "Home", path: "/" },
-    { title: "Bookings", path: "/user/bookings" },
+    { title: "Bookings", path: "/bookings" },
   ];
   const getUserData = async () => {
     try {

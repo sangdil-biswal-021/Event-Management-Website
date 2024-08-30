@@ -4,6 +4,7 @@ import { connectDB } from "@/config/dbConfig";
 import { EventType } from "@/interfaces/events";
 import TicketSelection from "../_components/ticket-selection";
 import BookingModel from "@/models/booking-model";
+import { Console } from "console";
 connectDB();
 
 interface Props {
@@ -18,6 +19,8 @@ async function BookEventPage({ params }: Props) {
     event: params.eventid,
     status: "booked",
   });
+
+  // console.log(eventBookings);// eventBooking finds all the bookings happend for that event;
 
   const getEventProperty = (property: string) => {
     return (

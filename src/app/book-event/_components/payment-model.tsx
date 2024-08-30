@@ -44,8 +44,8 @@ function PaymentModal({
         elements,
         confirmParams: {
           return_url:
-          "http://localhost:3000/",
-            // `${process.env.NEXT_PUBLIC_DOMAIN!}/bookings`
+          // "http://localhost:3000/",
+            `${process.env.NEXT_PUBLIC_DOMAIN!}/bookings`
         },
         redirect: "if_required",
       });

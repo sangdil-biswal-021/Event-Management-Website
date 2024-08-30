@@ -2,6 +2,7 @@ import {
   getMongoDBUserIDOfLoggedInUser,
   handleNewUserRegistration,
 } from "@/actions/user";
+import Filters from "@/components/filters";
 import { connectDB } from "@/config/dbConfig";
 import { EventType } from "@/interfaces/events";
 import EventModel from "@/models/event-model";
@@ -9,15 +10,41 @@ import Link from "next/link";
 
 connectDB();
 
-export default async function Home() {
+interface Props {
+  searchParams: {
+    name: string;
+    date: string;
+  };
+}
+
+export default async function Home({ searchParams }: Props) {
   await handleNewUserRegistration();
 
-  const events: EventType [] = (await EventModel.find({}).sort({
+  await getMongoDBUserIDOfLoggedInUser();
+
+  let filters = {};
+  if (searchParams.name) {
+    filters = {
+      name: {
+        $regex: searchParams.name,
+        $options: "i",
+      },
+    };
+  }
+
+  if (searchParams.date) {
+    filters = {
+      ...filters,
+      date: searchParams.date,
+    };
+  }
+
+  const events: EventType[] = (await EventModel.find(filters).sort({
     createdAt: -1,
   })) as any;
-
   return (
     <div>
+      <Filters />
       <div className="flex flex-col gap-5">
         {events.map((event) => (
           <div
@@ -30,7 +57,8 @@ export default async function Home() {
                 alt="Picture of the event"
                 // height={130}
                 // width={250}
-                className="w-full h-[35vh] object-cover hover:scale-105 transition-all duration-600 rounded-l-sm"
+                // className="w-full object-contain rounded-l-sm"
+                className="w-full md:h-[35vh] h-[50vh] object-cover rounded-l-sm"
               />
             </div>
             <div className="col-span-2 flex flex-col gap-5 justify-between p-5">
@@ -62,6 +90,14 @@ export default async function Home() {
           </div>
         ))}
       </div>
+
+      {events.length === 0 && (
+        <div className="w-full mt-100 flex justify-center">
+          <h1 className="text-sm">
+            No events found for your search
+          </h1>
+        </div>
+      )}
     </div>
   );
 }
