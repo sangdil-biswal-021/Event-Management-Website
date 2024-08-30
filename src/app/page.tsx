@@ -2,7 +2,7 @@ import {
   getMongoDBUserIDOfLoggedInUser,
   handleNewUserRegistration,
 } from "@/actions/user";
-import Filters from "@/components/filters";
+import Filters from "@/components/Filters";
 import { connectDB } from "@/config/dbConfig";
 import { EventType } from "@/interfaces/events";
 import EventModel from "@/models/event-model";
