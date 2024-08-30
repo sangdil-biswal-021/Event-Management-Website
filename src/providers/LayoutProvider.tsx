@@ -1,40 +1,69 @@
 "use client";
 import { UserButton } from "@clerk/nextjs";
-import React from "react";
 import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
 } from "@nextui-org/react";
-import { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 function LayoutProvider({ children }: { children: React.ReactNode }) {
+  const [isAdmin, setIsAdmin] = React.useState(false);
   const menusForAdmin = [
-    { title: "Home", path: "/" },
-    { title: "Events", path: "/admin/events" },
-    { title: "Bookings", path: "/admin/bookings" },
-    { title: "Users", path: "/admin/users" },
-    { title: "Reports", path: "/admin/reports" },
+    {
+      title: "Home",
+      path: "/",
+    },
+    {
+      title: "Events",
+      path: "/admin/events",
+    },
+    {
+      title: "Bookings",
+      path: "/admin/bookings",
+    },
+    {
+      title: "Users",
+      path: "/admin/users",
+    },
+    {
+      title: "Reports",
+      path: "/admin/reports",
+    },
   ];
+
   const menusForUser = [
-    { title: "Home", path: "/" },
-    { title: "Bookings", path: "/bookings" },
+    {
+      title: "Home",
+      path: "/",
+    },
+
+    {
+      title: "Bookings",
+      path: "/bookings",
+    },
   ];
+
+  const pathname = usePathname();
+  console.log("pathname", pathname);
+  const router = useRouter();
+  const [menusToShow, setMenusToShow] = React.useState<any[]>([]);
+  const isPrivateRoute = !["/sign-in", "/sign-up"].includes(pathname);
   const getUserData = async () => {
     try {
-      const response = await axios.get("/api/current-user"); //In Next.js, the "pages/api" directory is a special directory where you can create server-side API endpoints. When you create a file inside the "pages/api" directory, it automatically becomes an API route that can handle HTTP requests.
+      const response = await axios.get("/api/current-user");
       if (response.data.user.isAdmin) {
         setMenusToShow(menusForAdmin);
+        setIsAdmin(true);
       } else {
         setMenusToShow(menusForUser);
       }
     } catch (error: any) {
-      // console.log("error:", error);
       toast.error(error.message);
     }
   };
@@ -45,19 +74,23 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const pathname = usePathname();
-  const [menusToShow, setMenusToShow] = useState<any[]>([]);
-  const isPrivateRoute = !["/sign-in", "/sign-up"].includes(pathname);
-  const router = useRouter();
   return (
-    <div className="bg-gray-200 h-screen lg:px-20 px-5">
+    <div className="bg-gray-200  lg:px-20 px-5">
       {isPrivateRoute && (
         <div className="bg-white flex justify-between items-center shadow px-3 py-5">
-          <h1 className="font-semibold text-2xl cursor-pointer text-blue-900" onClick={() => router.push("/")}>FF EVENTS</h1>
+          <h1
+            className=" font-semibold text-2xl cursor-pointer text-blue-900"
+            onClick={() => router.push("/")}
+          >
+            SHEY EVENTS
+          </h1>
+
           <div className="flex gap-5 items-center">
             <Dropdown size="sm">
               <DropdownTrigger>
-                <Button variant="flat" color="primary" size="sm">Profile</Button>
+                <Button variant="flat" color="primary" size="sm">
+                  Profile
+                </Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
                 {menusToShow.map((menu) => (
@@ -76,7 +109,11 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       )}
-      <div className="py-3">{children}</div>
+      <div className="py-5">
+        {!isAdmin && pathname.includes("admin")
+          ? "You are not authorized to view this page"
+          : children}
+      </div>
     </div>
   );
 }
